@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class ContolPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Rigidbody2D rb;
+    private Vector2 move = new Vector2(0, 0);
+    [SerializeField] float speed = 5f;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+    }
+    public void Jump()
+    {
+        {
+            move.y += speed;
+            rb.AddRelativeForce(move);
+            Debug.Log("Jumped");
+        }
     }
 }
