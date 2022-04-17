@@ -377,6 +377,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualCue: {fileID: 121976020}
   playerInRange: 0
+  _startCue:
+    m_Name: Start Cue
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 97bce854-4b31-43ba-a0e5-fa6be6945142
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 48a1bd69-38c7-48d9-a81e-65fbc4012278
+      m_Path: <Keyboard>/i
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start Cue
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

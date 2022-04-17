@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -9,16 +10,32 @@ public class DialogueTrigger : MonoBehaviour
 
     [SerializeField] private bool playerInRange = false;
 
+    [SerializeField] private InputAction _startCue;
+
     private void Awake()
     {
         visualCue.SetActive(false);
         playerInRange = false;
+    }
+    private void OnEnable()
+    {
+        _startCue.Enable();
+    }
+    private void OnDisable()
+    {
+        _startCue.Disable();
     }
     private void Update()
     {
         if (playerInRange)
         {
             visualCue.SetActive(true);
+            _startCue.performed += context =>
+            {
+                if (context.performed) {
+                    Debug.Log("Show Dialogue");
+                }
+            };
         }
         else if(!playerInRange){ 
             visualCue.SetActive(false);
