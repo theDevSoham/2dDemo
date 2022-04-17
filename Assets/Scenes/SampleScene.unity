@@ -376,6 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualCue: {fileID: 121976020}
+  inkJson: {fileID: 4900000, guid: cfc4ba17c64775443b2953ef7d93a745, type: 3}
   playerInRange: 0
   _startCue:
     m_Name: Start Cue
@@ -386,7 +387,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 48a1bd69-38c7-48d9-a81e-65fbc4012278
+      m_Id: 6f0c989b-97ef-4d1b-bb71-30d16aae6e79
       m_Path: <Keyboard>/i
       m_Interactions: 
       m_Processors: 

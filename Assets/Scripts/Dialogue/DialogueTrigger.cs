@@ -8,6 +8,9 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
 
+    [Header("Text file")]
+    [SerializeField] private TextAsset inkJson;
+
     [SerializeField] private bool playerInRange = false;
 
     [SerializeField] private InputAction _startCue;
@@ -27,20 +30,32 @@ public class DialogueTrigger : MonoBehaviour
     }
     private void Update()
     {
+        TriggerDialogue();
+    }
+
+    private void TriggerDialogue()
+    {
         if (playerInRange)
         {
             visualCue.SetActive(true);
+            _startCue.Enable();
             _startCue.performed += context =>
             {
-                if (context.performed) {
-                    Debug.Log("Show Dialogue");
+                if (context.performed)
+                {
+                    Debug.Log(inkJson.text);
                 }
             };
         }
-        else if(!playerInRange){ 
+        else if (!playerInRange)
+        {
             visualCue.SetActive(false);
+            _startCue.Disable();
         }
     }
+
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
