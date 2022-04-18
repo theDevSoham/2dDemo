@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private InputAction playerController;
     private Vector2 moveControl = Vector2.zero;
+    [SerializeField] private GameObject dialogueManager;
 
     private void OnEnable()
     {
@@ -27,6 +28,10 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (dialogueManager.GetComponent<DialogueManager>().isPlaying) {
+            return;
+        }
+
         moveControl = playerController.ReadValue<Vector2>();
         rb.velocity = new Vector2(moveControl.x * speed, 0);
     }

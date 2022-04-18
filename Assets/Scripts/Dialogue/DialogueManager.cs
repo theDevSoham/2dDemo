@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private InputAction _startAction;
 
-    public bool isPlaying;
+    public bool isPlaying { get; private set; }
 
 
     private void Awake()

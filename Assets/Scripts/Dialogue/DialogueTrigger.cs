@@ -38,7 +38,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void TriggerDialogue()
     {
-        if (playerInRange)
+        if (playerInRange && !dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
             visualCue.SetActive(true);
             _startCue.Enable();

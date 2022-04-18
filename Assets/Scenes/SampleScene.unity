@@ -398,14 +398,13 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 1cb079db-4cc3-4c8c-a5c1-884ecc5a6984
-      m_Path: <Keyboard>/i
+      m_Path: <Keyboard>/c
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Start
       m_Flags: 0
     m_Flags: 0
-  isPlaying: 0
 --- !u!4 &307023904
 Transform:
   m_ObjectHideFlags: 0
@@ -1590,3 +1589,4 @@ MonoBehaviour:
       m_Action: Player Controller
       m_Flags: 8
     m_Flags: 0
+  dialogueManager: {fileID: 307023902}
