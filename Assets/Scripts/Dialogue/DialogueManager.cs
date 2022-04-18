@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private InputAction _startAction;
 
-    private bool isPlaying;
+    public bool isPlaying;
 
 
     private void Awake()
@@ -31,6 +31,17 @@ public class DialogueManager : MonoBehaviour
         }
         instance = this;
     }
+
+    private void OnEnable()
+    {
+        _startAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _startAction.Disable();
+    }
+
 
     public static DialogueManager GetInstance() { 
         return instance;
@@ -49,15 +60,26 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        _startAction.performed += context => {
-            if (context.performed) {
-                //ContinueStory();
-                Debug.Log("Lawde");
+        _startAction.performed += context =>
+        {
+            if (context.performed)
+            {
+                ContinueStory();
             }
         };
     }
 
-    private void ContinueStory()
+    
+
+    public void EnterDialogueMode(TextAsset getInkJson) {
+        currentStory = new Story(getInkJson.text);
+        isPlaying = true;
+        dialoguePanel.SetActive(true);
+
+        ContinueStory();
+    }
+
+    public void ContinueStory()
     {
         if (currentStory.canContinue)
         {
@@ -67,14 +89,6 @@ public class DialogueManager : MonoBehaviour
         {
             ExitDialogueMode();
         }
-    }
-
-    public void EnterDialogueMode(TextAsset getInkJson) {
-        currentStory = new Story(getInkJson.text);
-        isPlaying = true;
-        dialoguePanel.SetActive(true);
-
-        ContinueStory();
     }
 
     private void ExitDialogueMode()
