@@ -8,6 +8,9 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
 
+    [Header("Dialogue Manager")]
+    [SerializeField] private GameObject dialogueManager;
+
     [Header("Text file")]
     [SerializeField] private TextAsset inkJson;
 
@@ -43,7 +46,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 if (context.performed)
                 {
-                    Debug.Log(inkJson.text);
+                    dialogueManager.GetComponent<DialogueManager>().EnterDialogueMode(inkJson);
                 }
             };
         }
