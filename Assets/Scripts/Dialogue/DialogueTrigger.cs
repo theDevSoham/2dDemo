@@ -38,8 +38,10 @@ public class DialogueTrigger : MonoBehaviour
 
     private void TriggerDialogue()
     {
+        //Debug.Log(dialogueManager.GetComponent<DialogueManager>().isPlaying);
         if (playerInRange && !dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
+            Debug.Log(dialogueManager.GetComponent<DialogueManager>().isPlaying);
             visualCue.SetActive(true);
             _startCue.Enable();
             _startCue.performed += context =>
@@ -50,7 +52,7 @@ public class DialogueTrigger : MonoBehaviour
                 }
             };
         }
-        else if (!playerInRange)
+        else if (!playerInRange || dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
             visualCue.SetActive(false);
             _startCue.Disable();

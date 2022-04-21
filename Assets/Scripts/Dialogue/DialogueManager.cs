@@ -10,6 +10,8 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance;
 
+    private Coroutine cor;
+
     [Header("Dialogue Panel")]
     [SerializeField] private GameObject dialoguePanel;
 
@@ -57,21 +59,26 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isPlaying)
         {
+            //Debug.Log("Out");
             return;
         }
 
-        _startAction.performed += context =>
+        else
         {
-            if (context.performed)
+            _startAction.performed += context =>
             {
-                ContinueStory();
-            }
-        };
+                if (context.performed)
+                {
+                    ContinueStory();
+                }
+            };
+        }
     }
 
     
 
     public void EnterDialogueMode(TextAsset getInkJson) {
+        //Debug.Log("dhukche");
         currentStory = new Story(getInkJson.text);
         isPlaying = true;
         dialoguePanel.SetActive(true);
@@ -87,12 +94,14 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            ExitDialogueMode();
+            cor = StartCoroutine(ExitDialogueMode());
         }
     }
 
-    private void ExitDialogueMode()
+    private IEnumerator ExitDialogueMode()
     {
+        yield return new WaitForSeconds(0.1f);
+        //Debug.Log("cholche");
         isPlaying = false;
         dialoguePanel.SetActive(false);
         textMesh.text = "";
