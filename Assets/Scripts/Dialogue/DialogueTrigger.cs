@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class DialogueTrigger : MonoBehaviour
 {
     [Header("Visual Cue")]
-    [SerializeField] private GameObject visualCue;
+    [SerializeField] private GameObject[] playerInteraction;
+    //0th position has visualCue
+    //1st position has InteractButton
 
     [Header("Dialogue Manager")]
     [SerializeField] private GameObject dialogueManager;
@@ -20,7 +22,8 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Awake()
     {
-        visualCue.SetActive(false);
+        playerInteraction[0].SetActive(false);
+        playerInteraction[1].SetActive(false);
         playerInRange = false;
     }
     private void OnEnable()
@@ -40,7 +43,8 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (playerInRange && !dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
-            visualCue.SetActive(true);
+            playerInteraction[0].SetActive(true);
+            playerInteraction[1].SetActive(true);
             _startCue.Enable();
             _startCue.performed += context =>
             {
@@ -50,9 +54,10 @@ public class DialogueTrigger : MonoBehaviour
                 }
             };
         }
-        else if (!playerInRange)
+        else if (!playerInRange || dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
-            visualCue.SetActive(false);
+            playerInteraction[0].SetActive(false);
+            playerInteraction[1].SetActive(false);
             _startCue.Disable();
         }
     }
