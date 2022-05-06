@@ -90,6 +90,9 @@ public class DialogueManager : MonoBehaviour
 
     public void ContinueStory()
     {
+
+        EraseUI();
+
         if (currentStory.canContinue)
         {
             textMesh.text = currentStory.Continue();
@@ -98,6 +101,12 @@ public class DialogueManager : MonoBehaviour
         else
         {
             ExitDialogueMode();
+        }
+    }
+
+    private void EraseUI() {
+        for (int i = 0; i < this.transform.childCount; i++) {
+            Destroy(this.transform.GetChild(i).gameObject);
         }
     }
 
@@ -122,18 +131,17 @@ public class DialogueManager : MonoBehaviour
 
             choiceButtonText.text = choice.text;
             pos -= buttonDistanceFactor;
+
+            choiceButton.onClick.AddListener(delegate
+            {
+                MakeChoice(choice);
+            });
             i++;
         }
-        StartCoroutine(SelectFirstChoice());
     }
 
-    private IEnumerator SelectFirstChoice() {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-        //EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-    }
-
-    public void MakeChoiceIndex(int choiceIndex) { 
-        currentStory.ChooseChoiceIndex(choiceIndex);
+    private void MakeChoice(Choice choice) {
+        currentStory.ChooseChoiceIndex(choice.index);
+        ContinueStory();
     }
 }
