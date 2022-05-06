@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
     public void ContinueStory()
     {
 
-        EraseUI();
+        //EraseUI();
 
         if (currentStory.canContinue)
         {
@@ -104,12 +104,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void EraseUI() {
-        for (int i = 0; i < this.transform.childCount; i++) {
-            Destroy(this.transform.GetChild(i).gameObject);
-        }
-    }
-
     private void ExitDialogueMode()
     {
         isPlaying = false;
@@ -119,6 +113,10 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices() {
         List<Choice> currentChoices = currentStory.currentChoices;
+        if (currentChoices.Count > 0) {
+            GameObject continueButton = dialoguePanel.transform.GetChild(1).gameObject;
+            continueButton.SetActive(false);
+        }
         int i = 0;
         float pos = 0;
         foreach (Choice choice in currentChoices) {
@@ -141,7 +139,29 @@ public class DialogueManager : MonoBehaviour
     }
 
     private void MakeChoice(Choice choice) {
+        GameObject continueButton = dialoguePanel.transform.GetChild(1).gameObject;
+        continueButton.SetActive(true);
         currentStory.ChooseChoiceIndex(choice.index);
+        DestroyChoices();
         ContinueStory();
+    }
+
+    private void DestroyChoices() {
+        GameObject choiceParent = dialoguePanel.transform.GetChild(2).gameObject;
+        if (choiceParent.transform.childCount > 0) {
+
+            //Store gameobjects
+            GameObject[] allChildren = new GameObject[choiceParent.transform.childCount];
+            int i = 0;
+            foreach (Transform child in choiceParent.transform) {
+                allChildren[i] = child.gameObject;
+                i++;
+            }
+
+            //Use gameobjects
+            foreach (GameObject child in allChildren) { 
+                DestroyImmediate(child);
+            }
+        }
     }
 }
