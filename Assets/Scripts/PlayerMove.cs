@@ -11,6 +11,10 @@ public class PlayerMove : MonoBehaviour
     private Vector2 moveControl = Vector2.zero;
     [SerializeField] private GameObject dialogueManager;
 
+    private bool isGrounded = false;
+    private float velocity = 0;
+    [SerializeField] private float gravitationOffset = 30f;
+
     private void OnEnable()
     {
         playerController.Enable();
@@ -33,6 +37,36 @@ public class PlayerMove : MonoBehaviour
         }
 
         moveControl = playerController.ReadValue<Vector2>();
-        rb.velocity = new Vector2(moveControl.x * speed, 0);
+        if (!isGrounded)
+        {
+            if (velocity <= -60)
+            {
+                velocity = 0;
+            }
+            else
+            {
+                velocity -= (gravitationOffset + 70);
+            }
+
+            rb.velocity = new Vector2(0, velocity * Time.deltaTime);
+        }
+        else {
+            rb.velocity = new Vector2(moveControl.x * speed, 0);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Ground")
+        {
+            isGrounded = false;
+        }
     }
 }
