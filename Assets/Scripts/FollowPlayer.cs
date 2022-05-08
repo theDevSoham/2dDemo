@@ -11,6 +11,8 @@ public class FollowPlayer : MonoBehaviour
     private Vector3 newPos = Vector3.zero;
     private Transform playerPos;
 
+    private bool isMoving = false;
+
 
     private void Start()
     {
@@ -18,9 +20,28 @@ public class FollowPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        newPos = new Vector3(playerPos.position.x, playerPos.position.y + yOffset, -10f);
-        transform.position = Vector3.Slerp(transform.position, newPos, m_Speed * Time.deltaTime);
+        if (isMoving)
+        {
+            newPos = new Vector3(playerPos.position.x, playerPos.position.y + yOffset, -10f);
+            transform.position = Vector3.Slerp(transform.position, newPos, m_Speed * Time.deltaTime);
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Player")
+        {
+            isMoving = false;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Player")
+        {
+            isMoving = true;
+        }
     }
 }
