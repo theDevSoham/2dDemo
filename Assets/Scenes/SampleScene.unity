@@ -311,6 +311,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 17335025}
   textMesh: {fileID: 791862854}
+  globalsInkFile:
+    compileAutomatically: 0
+    inkAsset: {fileID: 102900000, guid: 4d6fe149baeebee42a9bfbe4e8827eb1, type: 3}
+    jsonAssetDirectory: {fileID: 0}
+    jsonAsset: {fileID: 0}
+    unhandledCompileErrors: []
+    errors: []
+    warnings: []
+    todos: []
+    parents: []
+    masterInkAssets: []
+    masterInkAsset: {fileID: 0}
+    includePaths: []
+    includes: []
   _startAction:
     m_Name: Start
     m_Type: 0
@@ -331,6 +345,7 @@ MonoBehaviour:
   prefabButton: {fileID: 7116685131789510953, guid: 9ec4f0c83c66d8846bb92a45e706166c, type: 3}
   choicesObject: {fileID: 828066944}
   buttonDistanceFactor: 100
+  choicesObjects: {fileID: 1245213196}
 --- !u!4 &307023904
 Transform:
   m_ObjectHideFlags: 0

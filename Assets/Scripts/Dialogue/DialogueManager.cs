@@ -4,8 +4,8 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Ink.UnityIntegration;
 using System;
 
 public class DialogueManager : MonoBehaviour
@@ -21,6 +21,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Ink File")]
     [SerializeField] private Story currentStory;
 
+    [Header("Globals Ink File")]
+    [SerializeField] private InkFile globalsInkFile;
+
     [SerializeField] private InputAction _startAction;
 
     [SerializeField] private Button prefabButton;
@@ -29,6 +32,10 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private float buttonDistanceFactor = 100f;
 
+    private DialogueVariables dialogueVariables;
+
+    [SerializeField] private GameObject choicesObjects;
+    private int numberOfObjects;
 
     public bool isPlaying { get; private set; }
 
@@ -39,6 +46,9 @@ public class DialogueManager : MonoBehaviour
             Debug.LogWarning("More than one singleton class found");
         }
         instance = this;
+
+        dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
+        numberOfObjects = choicesObjects.GetComponent<NumberOfChoices>().Choices.Length;
     }
 
     private void OnEnable()
@@ -85,6 +95,8 @@ public class DialogueManager : MonoBehaviour
         isPlaying = true;
         dialoguePanel.SetActive(true);
 
+        dialogueVariables.StartListening(currentStory);
+
         ContinueStory();
     }
 
@@ -109,6 +121,7 @@ public class DialogueManager : MonoBehaviour
         isPlaying = false;
         dialoguePanel.SetActive(false);
         textMesh.text = "";
+        dialogueVariables.StopListening(currentStory);
     }
 
     private void DisplayChoices() {
@@ -142,6 +155,7 @@ public class DialogueManager : MonoBehaviour
         GameObject continueButton = dialoguePanel.transform.GetChild(1).gameObject;
         continueButton.SetActive(true);
         currentStory.ChooseChoiceIndex(choice.index);
+        ObjectEquivalentChoice();
         DestroyChoices();
         ContinueStory();
     }
@@ -163,5 +177,22 @@ public class DialogueManager : MonoBehaviour
                 DestroyImmediate(child);
             }
         }
+    }
+
+    public Ink.Runtime.Object GetVariableState(string variableName)
+    {
+        Ink.Runtime.Object variableValue = null;
+        dialogueVariables.variables.TryGetValue(variableName, out variableValue);
+
+        if(variableValue == null)
+        {
+            Debug.Log("Variable found to be null: " + variableName);
+        }
+
+        return variableValue;
+    }
+    private void ObjectEquivalentChoice()
+    {
+        string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
     }
 }
