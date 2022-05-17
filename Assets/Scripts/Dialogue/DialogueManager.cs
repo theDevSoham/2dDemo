@@ -35,6 +35,7 @@ public class DialogueManager : MonoBehaviour
     private DialogueVariables dialogueVariables;
 
     [SerializeField] private GameObject choicesObjects;
+    private GameObject[] choicesArray;
     private int numberOfObjects;
 
     public bool isPlaying { get; private set; }
@@ -49,6 +50,16 @@ public class DialogueManager : MonoBehaviour
 
         dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
         numberOfObjects = choicesObjects.GetComponent<NumberOfChoices>().Choices.Length;
+
+
+        choicesArray = new GameObject[numberOfObjects];
+        for(int i=0; i<numberOfObjects; i++)
+        {
+            if (numberOfObjects != 0)
+            {
+                choicesArray[i] = choicesObjects.GetComponent<NumberOfChoices>().Choices[i];
+            }
+        }
     }
 
     private void OnEnable()
@@ -194,5 +205,9 @@ public class DialogueManager : MonoBehaviour
     private void ObjectEquivalentChoice()
     {
         string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
+        int indexBound = ((Ink.Runtime.IntValue)GetVariableState("storyIndex")).value;
+
+        GameObject nextPhase = Instantiate(choicesArray[indexBound]);
+        nextPhase.SetActive(true);
     }
 }
