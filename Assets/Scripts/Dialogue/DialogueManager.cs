@@ -34,6 +34,8 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueVariables dialogueVariables;
 
+    [SerializeField] private GameObject[] variablesInPhase; 
+
     [SerializeField] private GameObject choicesObjects;
     private GameObject[] choicesArray;
     private int numberOfObjects;
@@ -204,10 +206,47 @@ public class DialogueManager : MonoBehaviour
     }
     private void ObjectEquivalentChoice()
     {
-        string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
+        //string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
         int indexBound = ((Ink.Runtime.IntValue)GetVariableState("storyIndex")).value;
 
-        GameObject nextPhase = Instantiate(choicesArray[indexBound]);
+        GameObject nextPhase = Instantiate(choicesArray[indexBound], GameObject.Find("ChoiceTypes").transform);
         nextPhase.SetActive(true);
+        nextPhase.transform.localPosition = Vector3.zero;
+
+        //nextPhase.transform.GetChild(1).transform.GetChild(1).GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
+        foreach (Transform t in nextPhase.transform)
+        {
+            if(t.gameObject.tag.Contains("NPC"))
+            {
+                foreach(Transform child in t.gameObject.transform)
+                {
+                    if (child.gameObject.name.Contains("Trigger"))
+                    {
+                        //child.gameObject.GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
+                        child.gameObject.GetComponent<DialogueTrigger>().dialogueManager = variablesInPhase[1];
+                    }
+                }
+            }
+        }
+        //Debug.Log(nextPhase.transform.childCount);
+
+        //List<GameObject> NPCs = new List<GameObject>();
+
+        //NPCs = FindChildrenWithName(nextPhase, "NPC");
+
+    }
+
+    private static List<GameObject> FindChildrenWithName(GameObject go, string name)
+    {
+        List<GameObject> children = new List<GameObject>();
+
+        foreach (Transform t in go.transform)
+        {
+            if (t.gameObject.name.Contains(name))
+            {
+                children.Add(t.gameObject);
+            }
+        }
+        return children;
     }
 }

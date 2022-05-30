@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [Header("Visual Cue")]
-    [SerializeField] private GameObject[] playerInteraction;
+    [Header("Player Interaction")]
+    public GameObject[] playerInteraction;
     //0th position has visualCue
     //1st position has InteractButton
 
     [Header("Dialogue Manager")]
-    [SerializeField] private GameObject dialogueManager;
+    public GameObject dialogueManager;
 
     [Header("Text file")]
     [SerializeField] private TextAsset inkJson;
@@ -23,7 +23,7 @@ public class DialogueTrigger : MonoBehaviour
     private void Awake()
     {
         playerInteraction[0].SetActive(false);
-        playerInteraction[1].SetActive(false);
+        //playerInteraction[1].SetActive(false);
         playerInRange = false;
     }
     private void OnEnable()
@@ -44,7 +44,7 @@ public class DialogueTrigger : MonoBehaviour
         if (playerInRange && !dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
             playerInteraction[0].SetActive(true);
-            playerInteraction[1].SetActive(true);
+            //playerInteraction[1].SetActive(true);
             _startCue.Enable();
             _startCue.performed += context =>
             {
@@ -57,7 +57,7 @@ public class DialogueTrigger : MonoBehaviour
         else if (!playerInRange || dialogueManager.GetComponent<DialogueManager>().isPlaying)
         {
             playerInteraction[0].SetActive(false);
-            playerInteraction[1].SetActive(false);
+            //playerInteraction[1].SetActive(false);
             _startCue.Disable();
         }
     }
