@@ -4,7 +4,7 @@ INCLUDE globals.ink
 
 ===main===
 Hello and Welcome
-Which Pokemon do you choose? 
+Which Pokemon do you choose? {storyPhase}
     +[Charmander]
     ->pokemon("Charmander", 2)
     +[Bulbasaur]
@@ -15,7 +15,8 @@ Which Pokemon do you choose?
 ===pokemon(pokemonn, index)=== 
 ~pokemonName = pokemonn
 ~storyIndex = index
-You chose {pokemonName} 
+~storyPhase = 1
+You chose {pokemonName} {storyPhase}
 ->DONE
 
 ===already_chosen===

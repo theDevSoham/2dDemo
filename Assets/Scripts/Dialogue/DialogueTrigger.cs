@@ -67,13 +67,13 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player") { 
+        if (collision.gameObject.tag.Contains("Player")) { 
             playerInRange = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag.Contains("Player"))
         {
             playerInRange = false;
         }

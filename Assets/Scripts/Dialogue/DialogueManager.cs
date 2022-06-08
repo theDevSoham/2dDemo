@@ -51,6 +51,16 @@ public class DialogueManager : MonoBehaviour
         instance = this;
 
         dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
+
+        GameObject g = GameObject.Find("ChoiceTypes");
+        foreach(Transform go in g.transform) 
+        {
+            foreach(Transform child in go.gameObject.transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
         numberOfObjects = choicesObjects.GetComponent<NumberOfChoices>().Choices.Length;
 
 
@@ -168,10 +178,13 @@ public class DialogueManager : MonoBehaviour
         GameObject continueButton = dialoguePanel.transform.GetChild(1).gameObject;
         continueButton.SetActive(true);
         currentStory.ChooseChoiceIndex(choice.index);
-        ObjectEquivalentChoice();
+        //ObjectEquivalentChoice();
         DestroyChoices();
         ContinueStory();
+        OtherInteractionsWithChoice(choice.index);
     }
+
+   
 
     private void DestroyChoices() {
         GameObject choiceParent = dialoguePanel.transform.GetChild(2).gameObject;
@@ -203,6 +216,25 @@ public class DialogueManager : MonoBehaviour
         }
 
         return variableValue;
+    }
+    private void OtherInteractionsWithChoice(int index)
+    {
+        int phaseCount = ((Ink.Runtime.IntValue)GetVariableState("storyPhase")).value - 1;
+
+        //Get Relevant Gameobject bound with choice
+        Transform choiceToPhase = GameObject.Find("ChoiceTypes").transform.GetChild(phaseCount).transform;
+        if (choiceToPhase.gameObject.name == "FinalPhase")
+        {
+            Debug.Log("Final Phase");
+        }
+        else
+        {
+            choiceToPhase.GetChild(index).gameObject.SetActive(true);
+        }
+
+        //Activate relevant Gameobject bound with choice
+
+        //Move barrier to end of active gameobject
     }
     private void ObjectEquivalentChoice()
     {

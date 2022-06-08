@@ -6,12 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
+    //[SerializeField] private BoxCollider2D boxCollider;
+    //[SerializeField] private LayerMask groundLayer;
+
     [SerializeField] private float speed;
     [SerializeField] private InputAction playerController;
     private Vector2 moveControl = Vector2.zero;
     [SerializeField] private GameObject dialogueManager;
 
-    private bool isGrounded = false;
+    [SerializeField] private bool isGrounded = false;
     private float velocity = 0;
     [SerializeField] private float gravitationOffset = 30f;
 
@@ -27,11 +30,13 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        //boxCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //CheckGrounded();
         if (dialogueManager.GetComponent<DialogueManager>().isPlaying) {
             return;
         }
@@ -51,22 +56,40 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2(0, velocity * Time.deltaTime);
         }
         else {
-            rb.velocity = new Vector2(moveControl.x * speed, 0);
+            rb.velocity = new Vector2(moveControl.x * speed, moveControl.y * 20);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag.Contains("Ground"))
         {
             isGrounded = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag.Contains("Ground"))
         {
             isGrounded = false;
         }
     }
+
+    //private bool CheckGrounded()
+    //{
+    //    float extra = 0.1f;
+    //    RaycastHit2D raycast = Physics2D.Raycast(boxCollider.bounds.center, Vector2.down, boxCollider.bounds.extents.y + extra, groundLayer);
+    //    Color rayColor;
+    //    if(raycast.collider != null)
+    //    {
+    //        rayColor = Color.green;
+    //    }
+    //    else
+    //    {
+    //        rayColor = Color.blue;
+    //    }
+
+    //    Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extra), rayColor);
+    //    return raycast.collider != null;
+    //}
 }
