@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     private Vector2 moveControl = Vector2.zero;
     [SerializeField] private GameObject dialogueManager;
 
-    [SerializeField] private bool isGrounded = false;
+    public bool isGrounded { get; private set; }
     private float velocity = 0;
     [SerializeField] private float gravitationOffset = 30f;
 
@@ -56,7 +56,7 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2(0, velocity * Time.deltaTime);
         }
         else {
-            rb.velocity = new Vector2(moveControl.x * speed, moveControl.y * 20);
+            rb.velocity = new Vector2(moveControl.x * speed, 0);
         }
     }
 

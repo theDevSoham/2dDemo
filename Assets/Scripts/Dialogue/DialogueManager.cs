@@ -184,8 +184,6 @@ public class DialogueManager : MonoBehaviour
         OtherInteractionsWithChoice(choice.index);
     }
 
-   
-
     private void DestroyChoices() {
         GameObject choiceParent = dialoguePanel.transform.GetChild(2).gameObject;
         if (choiceParent.transform.childCount > 0) {
@@ -217,56 +215,69 @@ public class DialogueManager : MonoBehaviour
 
         return variableValue;
     }
+
     private void OtherInteractionsWithChoice(int index)
     {
         int phaseCount = ((Ink.Runtime.IntValue)GetVariableState("storyPhase")).value - 1;
+        GameObject chosenGameObj;
 
-        //Get Relevant Gameobject bound with choice
+        //Get and activate Relevant Gameobject bound with choice
         Transform choiceToPhase = GameObject.Find("ChoiceTypes").transform.GetChild(phaseCount).transform;
+        chosenGameObj = choiceToPhase.GetChild(index).gameObject;
         if (choiceToPhase.gameObject.name == "FinalPhase")
         {
             Debug.Log("Final Phase");
+            choiceToPhase.GetChild(index).gameObject.SetActive(true);
         }
         else
         {
             choiceToPhase.GetChild(index).gameObject.SetActive(true);
         }
-
-        //Activate relevant Gameobject bound with choice
-
         //Move barrier to end of active gameobject
+
+        MoveBarrier(chosenGameObj);
     }
-    private void ObjectEquivalentChoice()
+
+    private void MoveBarrier(GameObject sizeReferrence)
     {
-        //string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
-        int indexBound = ((Ink.Runtime.IntValue)GetVariableState("storyIndex")).value;
-
-        GameObject nextPhase = Instantiate(choicesArray[indexBound], GameObject.Find("ChoiceTypes").transform);
-        nextPhase.SetActive(true);
-        nextPhase.transform.localPosition = Vector3.zero;
-
-        //nextPhase.transform.GetChild(1).transform.GetChild(1).GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
-        foreach (Transform t in nextPhase.transform)
-        {
-            if(t.gameObject.tag.Contains("NPC"))
-            {
-                foreach(Transform child in t.gameObject.transform)
-                {
-                    if (child.gameObject.name.Contains("Trigger"))
-                    {
-                        //child.gameObject.GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
-                        child.gameObject.GetComponent<DialogueTrigger>().dialogueManager = variablesInPhase[1];
-                    }
-                }
-            }
-        }
-        //Debug.Log(nextPhase.transform.childCount);
-
-        //List<GameObject> NPCs = new List<GameObject>();
-
-        //NPCs = FindChildrenWithName(nextPhase, "NPC");
-
+        GameObject barrier = GameObject.Find("Barrier");
+        float sizeToRefer = sizeReferrence.transform.GetChild(0).gameObject.transform.localScale.x;
+        barrier.transform.Translate((sizeToRefer), 0, 0);
     }
+
+
+
+    //private void ObjectEquivalentChoice()
+    //{
+    //    //string pokemonName = ((Ink.Runtime.StringValue)GetVariableState("pokemonName")).value;
+    //    int indexBound = ((Ink.Runtime.IntValue)GetVariableState("storyIndex")).value;
+
+    //    GameObject nextPhase = Instantiate(choicesArray[indexBound], GameObject.Find("ChoiceTypes").transform);
+    //    nextPhase.SetActive(true);
+    //    nextPhase.transform.localPosition = Vector3.zero;
+
+    //    //nextPhase.transform.GetChild(1).transform.GetChild(1).GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
+    //    foreach (Transform t in nextPhase.transform)
+    //    {
+    //        if(t.gameObject.tag.Contains("NPC"))
+    //        {
+    //            foreach(Transform child in t.gameObject.transform)
+    //            {
+    //                if (child.gameObject.name.Contains("Trigger"))
+    //                {
+    //                    //child.gameObject.GetComponent<DialogueTrigger>().playerInteraction[1] = variablesInPhase[0];
+    //                    child.gameObject.GetComponent<DialogueTrigger>().dialogueManager = variablesInPhase[1];
+    //                }
+    //            }
+    //        }
+    //    }
+    //    //Debug.Log(nextPhase.transform.childCount);
+
+    //    //List<GameObject> NPCs = new List<GameObject>();
+
+    //    //NPCs = FindChildrenWithName(nextPhase, "NPC");
+
+    //}
 
     private static List<GameObject> FindChildrenWithName(GameObject go, string name)
     {
