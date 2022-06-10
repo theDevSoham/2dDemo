@@ -5,7 +5,6 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Ink.UnityIntegration;
 using System;
 
 public class DialogueManager : MonoBehaviour
@@ -21,8 +20,8 @@ public class DialogueManager : MonoBehaviour
     [Header("Ink File")]
     [SerializeField] private Story currentStory;
 
-    [Header("Globals Ink File")]
-    [SerializeField] private InkFile globalsInkFile;
+    [Header("Load Globals JSON")]
+    [SerializeField] private TextAsset loadGlobalsJSON;
 
     [SerializeField] private InputAction _startAction;
 
@@ -50,7 +49,7 @@ public class DialogueManager : MonoBehaviour
         }
         instance = this;
 
-        dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
+        dialogueVariables = new DialogueVariables(loadGlobalsJSON);
 
         GameObject g = GameObject.Find("ChoiceTypes");
         foreach(Transform go in g.transform) 

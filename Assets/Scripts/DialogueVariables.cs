@@ -1,18 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
-using System.IO;
 
 public class DialogueVariables
 {
     public Dictionary<string, Ink.Runtime.Object> variables;
 
-    public DialogueVariables(string globalFilesPath)
+    public DialogueVariables(TextAsset loadGlobalsJSON)
     {
-        string inkFileContents = File.ReadAllText(globalFilesPath);
-        Ink.Compiler compiler = new Ink.Compiler(inkFileContents);
-        Story globalVariableStory = compiler.Compile();
+        //create the story
+        Story globalVariableStory = new Story(loadGlobalsJSON.text);
 
         variables = new Dictionary<string, Ink.Runtime.Object>();
 
