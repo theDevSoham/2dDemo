@@ -5,6 +5,7 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 
 public class DialogueManager : MonoBehaviour
@@ -144,6 +145,11 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         textMesh.text = "";
         dialogueVariables.StopListening(currentStory);
+
+        if (((Ink.Runtime.IntValue)GetVariableState("annie")).value == 1)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     private void DisplayChoices() {
@@ -233,8 +239,11 @@ public class DialogueManager : MonoBehaviour
             choiceToPhase.GetChild(index).gameObject.SetActive(true);
         }
         //Move barrier to end of active gameobject
-
-        MoveBarrier(chosenGameObj);
+        bool changePos = ((Ink.Runtime.BoolValue)GetVariableState("changeBlockPos")).value;
+        if (changePos)
+        {
+            MoveBarrier(chosenGameObj);
+        } 
     }
 
     private void MoveBarrier(GameObject sizeReferrence)
@@ -278,17 +287,17 @@ public class DialogueManager : MonoBehaviour
 
     //}
 
-    private static List<GameObject> FindChildrenWithName(GameObject go, string name)
-    {
-        List<GameObject> children = new List<GameObject>();
+    //private static List<GameObject> FindChildrenWithName(GameObject go, string name)
+    //{
+    //    List<GameObject> children = new List<GameObject>();
 
-        foreach (Transform t in go.transform)
-        {
-            if (t.gameObject.name.Contains(name))
-            {
-                children.Add(t.gameObject);
-            }
-        }
-        return children;
-    }
+    //    foreach (Transform t in go.transform)
+    //    {
+    //        if (t.gameObject.name.Contains(name))
+    //        {
+    //            children.Add(t.gameObject);
+    //        }
+    //    }
+    //    return children;
+    //}
 }
